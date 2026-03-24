@@ -1,0 +1,53 @@
+[project]
+name = "plex-mcp"
+version = "0.1.0"
+description = "MCP server for Plex Media Server"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    "fastmcp>=2.0.0",
+    "plexapi>=4.15.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "python-dateutil>=2.9.0",
+    "anyio>=4.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.27.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "types-python-dateutil",
+]
+
+[project.scripts]
+plex-mcp = "plex_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plex_mcp"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]  # line length enforced by formatter, not linter
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

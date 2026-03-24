@@ -1,0 +1,30 @@
+# docker-compose.yml — plex-mcp development/deployment helper
+#
+# Usage:
+#   1. Copy .env.example to .env and fill in PLEX_TOKEN + PLEX_SERVER
+#   2. docker compose build
+#   3. Wire your MCP client to: docker compose run --rm plex-mcp
+#
+# For Claude Desktop, set the command in claude_desktop_config.json to:
+#   "command": "docker",
+#   "args": ["compose", "-f", "/path/to/plex-mcp/docker-compose.yml", "run", "--rm", "plex-mcp"]
+#
+# stdio transport requires stdin/stdout pass-through — docker compose run handles this.
+
+version: "3.9"
+
+services:
+  plex-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Load environment from .env file (PLEX_TOKEN, PLEX_SERVER, etc.)
+    env_file:
+      - .env
+    # Override individual env vars here if needed:
+    # environment:
+    #   LOG_LEVEL: DEBUG
+    #   PLEX_CONNECT_TIMEOUT: 15
+    stdin_open: true   # Keep stdin open for MCP stdio transport
+    tty: false         # Do NOT allocate a TTY — MCP expects raw binary stdio
+    restart: "no"      # One-shot: MCP client starts/stops as needed

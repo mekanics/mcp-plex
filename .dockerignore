@@ -1,0 +1,45 @@
+# .dockerignore — exclude non-production files from Docker build context
+
+# Version control
+.git/
+.gitignore
+
+# Development environment
+.env
+.env.*
+!.env.example
+
+# Python cache / build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Test files (not needed in production image)
+tests/
+
+# Documentation
+README.md
+CHANGELOG.md
+FLOWS.md
+SAD.md
+TASKS.md
+*.md
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Docker itself
+Dockerfile
+docker-compose.yml
+.dockerignore

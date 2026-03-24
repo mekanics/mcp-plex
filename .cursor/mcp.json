@@ -1,0 +1,15 @@
+{
+	"mcpServers": {
+		"plex-mcp": {
+			"command": "docker",
+			"args": [
+				"compose",
+				"-f",
+				"/Users/ajoly/Development/private/mcp/plex-mcp/docker-compose.yml",
+				"run",
+				"--rm",
+				"plex-mcp"
+			]
+		}
+	}
+}
