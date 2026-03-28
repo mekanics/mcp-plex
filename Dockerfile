@@ -4,7 +4,7 @@
 # Runs as non-root user `appuser` for security.
 # Transport: stdio (MCP standard) — container communicates via stdin/stdout.
 
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # ── System setup ──────────────────────────────────────────────────────────────
 # Create a non-root user and app directory
