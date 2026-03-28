@@ -40,7 +40,7 @@ from plex_mcp.tools.sessions import now_playing as _now_playing
 logger = logging.getLogger(__name__)
 
 mcp: FastMCP = FastMCP(
-    name="plex-mcp",
+    name="mcp-plex",
     version="0.1.0",
     instructions=(
         "MCP server for Plex Media Server. "
