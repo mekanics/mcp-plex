@@ -8,8 +8,8 @@ FROM python:3.11-slim
 
 # ── System setup ──────────────────────────────────────────────────────────────
 # Create a non-root user and app directory
-RUN groupadd --gid 1001 appgroup \
- && useradd  --uid 1001 --gid appgroup --no-create-home appuser
+RUN groupadd --gid 1000 appgroup \
+ && useradd  --uid 1000 --gid appgroup --no-create-home appuser
 
 WORKDIR /app
 
