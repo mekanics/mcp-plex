@@ -7,7 +7,6 @@ handlers. Run via `plex-mcp` (console script) or `python -m plex_mcp.server`.
 from __future__ import annotations
 
 import logging
-import os
 from typing import Any
 
 from fastmcp import FastMCP
@@ -357,13 +356,15 @@ async def playback_control(
 def main() -> None:
     """Run the plex-mcp server.
 
-    Transport is selected via MCP_TRANSPORT (default: streamable-http).
-    This is our universal env var — consistent across Python and TypeScript MCPs.
+    Transport, host, and port are configured via FastMCP native env vars
+    (read automatically by FastMCP 3.x via pydantic-settings):
+      FASTMCP_TRANSPORT  (default: streamable-http)
+      FASTMCP_HOST       (default: 0.0.0.0)
+      FASTMCP_PORT       (default: 8000)
     """
     settings = get_settings()
     configure_logging(settings)
-    transport = os.environ.get("MCP_TRANSPORT", "streamable-http")
-    mcp.run(transport=transport)
+    mcp.run()
 
 
 if __name__ == "__main__":
