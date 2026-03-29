@@ -357,19 +357,13 @@ async def playback_control(
 def main() -> None:
     """Run the plex-mcp server.
 
-    Transport is controlled by the MCP_TRANSPORT env var:
-    - "streamable-http" (default in k8s) — listens on PORT (default 3000)
-    - "stdio" — reads from stdin/stdout (for local/Claude Desktop usage)
+    Transport is selected via MCP_TRANSPORT (default: streamable-http).
+    This is our universal env var — consistent across Python and TypeScript MCPs.
     """
     settings = get_settings()
     configure_logging(settings)
-    transport = os.environ.get("MCP_TRANSPORT", "stdio")
-    logger.info("Starting plex-mcp server (version 0.1.0, transport=%s)", transport)
-    if transport == "streamable-http":
-        port = int(os.environ.get("PORT", "3000"))
-        mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
-    else:
-        mcp.run(transport="stdio")
+    transport = os.environ.get("MCP_TRANSPORT", "streamable-http")
+    mcp.run(transport=transport)
 
 
 if __name__ == "__main__":
