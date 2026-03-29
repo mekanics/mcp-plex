@@ -24,8 +24,8 @@ cp .env.example .env
 plex-mcp
 ```
 
-The server communicates over **stdio** (standard MCP transport). Connect it to
-your MCP client (Claude Desktop, OpenClaw, etc.) as shown in the [MCP Client Setup](#mcp-client-setup) section.
+The server communicates over **streamable-http** by default (FastMCP native transport).
+Connect it to your MCP client as shown in the [MCP Client Setup](#mcp-client-setup) section.
 
 ---
 
@@ -40,6 +40,9 @@ All settings are loaded from environment variables or a `.env` file in the worki
 | `PLEX_CONNECT_TIMEOUT` | No | `10` | Connection timeout in seconds |
 | `PLEX_REQUEST_TIMEOUT` | No | `30` | Per-request timeout in seconds |
 | `LOG_LEVEL` | No | `WARNING` | Python logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
+| `FASTMCP_TRANSPORT` | No | `streamable-http` | MCP transport (`streamable-http` or `sse`) |
+| `FASTMCP_HOST` | No | `0.0.0.0` | Bind address |
+| `FASTMCP_PORT` | No | `8000` | Port the server listens on |
 
 Create a `.env` file:
 ```
@@ -59,11 +62,8 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "plex": {
-      "command": "plex-mcp",
-      "env": {
-        "PLEX_TOKEN": "your_token_here",
-        "PLEX_SERVER": "http://192.168.1.10:32400"
-      }
+      "type": "http",
+      "url": "http://localhost:8000/mcp"
     }
   }
 }
@@ -76,11 +76,8 @@ Add to your OpenClaw MCP config:
 ```json
 {
   "name": "plex",
-  "command": "plex-mcp",
-  "env": {
-    "PLEX_TOKEN": "your_token_here",
-    "PLEX_SERVER": "http://192.168.1.10:32400"
-  }
+  "type": "http",
+  "url": "http://localhost:8000/mcp"
 }
 ```
 
@@ -204,8 +201,11 @@ containerised deployment.
 docker build -t plex-mcp .
 
 # Run (with environment variables)
-docker run --rm -e PLEX_TOKEN=... -e PLEX_SERVER=http://192.168.1.10:32400 \
-  -i plex-mcp
+docker run --rm \
+  -e PLEX_TOKEN=... \
+  -e PLEX_SERVER=http://192.168.1.10:32400 \
+  -p 8000:8000 \
+  plex-mcp
 
 # Or with docker compose
 cp .env.example .env  # edit with your values
