@@ -38,6 +38,9 @@ USER appuser
 ENV PLEX_CONNECT_TIMEOUT=10 \
     PLEX_REQUEST_TIMEOUT=30 \
     LOG_LEVEL=WARNING
+# Universal MCP env vars — consistent across Python and TypeScript MCPs
+ENV MCP_TRANSPORT="streamable-http"
+ENV PORT="3000"
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 # plex-mcp reads from stdin and writes to stdout (MCP stdio transport).
